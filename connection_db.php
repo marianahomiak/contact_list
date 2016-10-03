@@ -1,6 +1,7 @@
     <?php
 
     require_once (getcwd() . '/connect_db.php');
+    require_once (getcwd(). '/get_data.php');
 
     session_start();
 
@@ -75,43 +76,23 @@
         <div style="width: 100%; text-align: center;">
                 <form method="POST">
                     Date from:&nbsp;<input type="text" name="start_date" id="start_date" value="<?php
-                    if(!isset($_REQUEST['start_date'])&&(!empty($_SESSION['start_date']))) {
-                        echo $_SESSION['start_date'];
-                    }  else if (empty($_SESSION['start_date'])&& (!isset($_REQUEST['start_date']))) {
-                        echo date("Y-m-1",strtotime("-1 month "));
-                    } else {
-                        echo $_REQUEST['start_date'];
-                    }
+                    $name = 'start_date';
+                    echo get_data($name);
                     ?>" />
 
                     Date to:&nbsp;<input type="text" name="end_date" id="end_date" value="<?php
-                    if(!isset($_REQUEST['end_date'])&&(!empty($_SESSION['end_date']))) {
-                        echo $_SESSION['end_date'];
-                    }  else if (empty($_SESSION['end_date'])&& (!isset($_REQUEST['end_date']))) {
-                        echo date("Y-m-t",strtotime("-1 month "));
-                    } else {
-                        echo $_REQUEST['end_date'];
-                    }
+                    $name = 'end_date';
+                    echo get_data($name);
                     ?>" />
 
                     Hour from:&nbsp;<input type="text" name="start_time" id="start_time" value="<?php
-                    if(!isset($_REQUEST['start_time'])&&(!empty($_SESSION['start_time']))) {
-                        echo $_SESSION['start_time'];
-                    }  else if (empty($_SESSION['start_time'])&& (!isset($_REQUEST['start_time']))) {
-                        echo '21:00:00';
-                    } else {
-                        echo $_REQUEST['start_time'];
-                    }
+                    $name = 'start_time';
+                    echo get_data($name);
                     ?>" />
 
                     Hour to:&nbsp;<input type="text" name="end_time" id="end_time" value="<?php
-                    if(!isset($_REQUEST['end_time'])&&(!empty($_SESSION['end_time']))) {
-                        echo $_SESSION['end_time'];
-                    }  else if (empty($_SESSION['end_time'])&& (!isset($_REQUEST['end_time']))) {
-                        echo '03:00:00';
-                    } else {
-                        echo $_REQUEST['end_time'];
-                    }
+                    $name = 'end_time';
+                    echo get_data($name);
                     ?>" />
 
                     <input type="submit" name="submit" value="Search" />
@@ -120,28 +101,23 @@
 
     <?php
 
-            if(isset($_REQUEST['submit'])) {
+    if(isset($_REQUEST['submit'])) {
 
-            if (isset($_REQUEST['start_date']) && !empty($_REQUEST['start_date'])) {
-                $start_date = strtotime($_REQUEST['start_date']);
-            }
-
-            if (isset($_REQUEST['end_date']) && !empty($_REQUEST['end_date'])) {
-                $end_date = strtotime($_REQUEST['end_date']);
-            }
-
-            if (isset($_REQUEST['start_time']) && !empty($_REQUEST['start_time'])) {
-                $start_time = strtotime($_REQUEST['start_time']);
-            }
-
-            if (isset($_REQUEST['end_time']) && !empty($_REQUEST['end_time'])) {
-                $end_time = strtotime($_REQUEST['end_time']);
-            }
-
-                $_SESSION['start_date'] = date('Y-m-d', $start_date);
-                $_SESSION['end_date'] = date('Y-m-d', $end_date);
-                $_SESSION['start_time'] = date('H:m:s', $start_time);
-                $_SESSION['end_time'] = date('H:m:s', $end_time);
-
-                get_contact_list($_SESSION['start_date'],$_SESSION['end_date'], $_SESSION['start_time'], $_SESSION['end_time']);
+        if (isset($_REQUEST['start_date']) && !empty($_REQUEST['start_date'])) {
+            $_SESSION['start_date'] = $_REQUEST['start_date'];
         }
+
+        if (isset($_REQUEST['end_date']) && !empty($_REQUEST['end_date'])) {
+            $_SESSION['end_date'] = $_REQUEST['end_date'];
+        }
+
+        if (isset($_REQUEST['start_time']) && !empty($_REQUEST['start_time'])) {
+            $_SESSION['start_time'] = $_REQUEST['start_time'];
+        }
+
+        if (isset($_REQUEST['end_time']) && !empty($_REQUEST['end_time'])) {
+            $_SESSION['end_time'] = $_REQUEST['end_time'];
+        }
+
+        get_contact_list($_SESSION['start_date'],$_SESSION['end_date'], $_SESSION['start_time'], $_SESSION['end_time']);
+    }
